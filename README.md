@@ -6,7 +6,7 @@ A simple self managed wrapper for MySQLi in PHP
  * Simple to use
  * single flexible query function
  
-# Use
+# Example
 ```php
 <?php
 require_once "SimpleSQL.php";
