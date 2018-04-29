@@ -13,18 +13,18 @@ require_once "SimpleSQL.php";
 class SimpleORM
 {
     // -- Class Fields
-    protected static $table = "";
-    protected static $key = "";
-    protected static $fields = "";
+    protected static $table;
+    protected static $key;
+    protected static $fields;
 
     /**
      * @param int $id
      * @return array
      */
-    public function Get($id)
+    public static function Get($id)
     {
-        $selectFields = (self::$fields == "") ? "*" : self::$fields;
-        $sql = "SELECT ".$selectFields." from ".self::$table." WHERE ".self::$key." = ? LIMIT 1";
+        $selectFields = (self::$fields == "" or self::$fields == null) ? "*" : self::$fields;
+        $sql = "SELECT ".$selectFields." FROM ".self::$table." WHERE ".self::$key." = ? LIMIT 1";
         $result = query($sql, [$id]);
         return $result[0];
     }
