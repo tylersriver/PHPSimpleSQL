@@ -12,7 +12,7 @@
 require_once "SimpleSQL.php";
 class SimpleORM
 {
-    // -- Class Fields
+    // -- DB Table Details
     protected static $table;
     protected static $key;
     protected static $fields;
@@ -23,8 +23,8 @@ class SimpleORM
      */
     public static function Get($id)
     {
-        $selectFields = (self::$fields == "" or self::$fields == null) ? "*" : self::$fields;
-        $sql = "SELECT ".$selectFields." FROM ".self::$table." WHERE ".self::$key." = ? LIMIT 1";
+        $selectFields = (static::$fields == "" or static::$fields == null) ? "*" : static::$fields;
+        $sql = "SELECT ".$selectFields." FROM ".static::$table." WHERE ".static::$key." = ? LIMIT 1";
         $result = query($sql, [$id]);
         return $result[0];
     }
