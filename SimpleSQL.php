@@ -12,9 +12,9 @@ class SimpleSQL
 {
     // -- Connection Strings
     private  $servername = 'localhost';
-    private  $username = 'dev_user';
+    private  $username = 'testUser';
     private  $password = 'test';
-    private  $db = 'testDB';
+    private  $db = 'test';
 
     private $conn; // MySQLi Connection
     private static $instance = null;
@@ -52,9 +52,9 @@ class SimpleSQL
 /**
  * MySQLi bound query function
  *
- * @param $sql string
- * @param $params array
- * @return bool | mysqli_result
+ * @param $sql string - The query to be executed
+ * @param $params array - Array of the parameters for the query
+ * @return bool | array
  */
 function query($sql, $params = array())
 {
@@ -69,7 +69,7 @@ function query($sql, $params = array())
     if(!$stmt) {
         die('SQL Error: ' . $sql);
     }
-    
+
     // Build types array
     $types = buildTypeStringFromArray($params);
 
@@ -88,10 +88,11 @@ function query($sql, $params = array())
         } else {
             $result = $stmt->get_result();
             if($result != null && $result != false) {
-                $data = array(); 
+                $data = array();
                 while($row = $result->fetch_assoc()) {
                     $data[] = $row;
                 }
+                mysqli_free_result($result);
                 return $data;
             }
         }
@@ -99,6 +100,16 @@ function query($sql, $params = array())
 
     return $result;
 }
+
+
+/***********************************************************************************************************************
+ *
+ *
+ *    Utility Functions
+ *
+ *
+ **********************************************************************************************************************/
+
 
 /**
  * Make array pass by reference
@@ -124,7 +135,7 @@ function makeValuesReferenced(&$arr)
  *  integer i
  *  string s
  *
- * @param $parms array
+ * @param $params array
  * @return string
  */
 function buildTypeStringFromArray($params)
