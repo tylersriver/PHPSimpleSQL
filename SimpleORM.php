@@ -107,4 +107,68 @@ class SimpleORM
         return query($sql, $params);
     }
 
+    /**
+     * Updates a record
+     * @param $id - id of the record we are updating
+     * @param $set - associative array of which fields to update
+     */
+    public static function Update($id, $set)
+    {
+        $sql = "UPDATE ".static::$table." SET ";
+        $params = array();
+
+        // Build fields to update string
+        $i = 0;
+        foreach($set as $key => $val) {
+            $sql .= $key ." = ?";
+            $params[] = $val;
+
+            $i++;
+            if($i < count($set)) {
+                $sql .= ", ";
+            }
+        }
+        $sql .= " WHERE ".static::$key." = ?";   
+        $params[] = $id; 
+        return query($sql, $params);
+    }
+
+    /**
+     * Updates many records based on where criteria
+     * @param array $set - associative array of which fields to update
+     * @param array $where - associative array of what fields to match in where clause
+     */
+    public static function UpdateMany($set, $where)
+    {
+        $sql = "UPDATE ".static::$table." SET ";
+        $params = array();
+
+        // Build fields to update string
+        $i = 0;
+        foreach($set as $key => $val) {
+            $sql .= $key ." = ?";
+            $params[] = $val;
+
+            $i++;
+            if($i < count($set)) {
+                $sql .= ", ";
+            }
+        }
+        $sql .= " ";
+
+        $sql .= " WHERE ";                                            
+        $i = 0;
+        foreach($where as $key => $val) {
+            $sql .= $key ." = ? ";
+            $params[] = $val;
+
+            $i++;                                                    
+            if($i < count($where)) {
+                $sql .= "AND ";
+            }
+        }
+        
+        return query($sql, $params);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+    }
+
 }

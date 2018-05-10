@@ -1,4 +1,18 @@
 <?php
+/**
+ * Test File
+ * 
+ * This file is used to test all of the functionality in the 
+ * SimplORM Class. We are using the TestUser as our model.
+ * 
+ * Tested Functions:
+ *      Get
+ *      GetList
+ *      GetOne
+ *      Add
+ *      Update
+ *      UpdateMany
+ */
 
 require_once "testModel.php";
 
@@ -45,5 +59,15 @@ $result = TestUser::Add([
     'lastName' => 'Smith',
     'userName' => 'jennifer.smith'
 ]); // No filter
+echo "Add test. Result: ";
+echo var_dump($result);
+
+// -- Update Test
+// -------------------------------------------------------------------------------------------------------------------------
+$result = TestUser::Update(6, ['firstName' => 'Bart']);
+echo "Add test. Result: ";
+echo var_dump($result);
+
+$result = TestUser::UpdateMany(['firstName' => 'Jennifer'], ['firstName' => 'List']);
 echo "Add test. Result: ";
 echo var_dump($result);
