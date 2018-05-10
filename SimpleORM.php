@@ -71,4 +71,40 @@ class SimpleORM
         return $result[0];
     }
 
+    /**
+     * Inserts a record into the table
+     * @param array values - associative array of field => value
+     * @return int - insert id
+     */
+    public static function Add($values = array())
+    {
+        if(count($values) == 0){
+            return false;
+        }
+
+        $sql = "INSERT INTO ".static::$table;
+
+        $cols = " ( "; // String for insert columns
+        $vals = " ( "; // String for vals to insert
+        $params = array(); // Parameters for query
+        $i = 0; // Count for iteration
+        foreach($values as $key => $val){
+            $cols .= "$key";
+            
+            $vals .= "? ";
+            $params[] = $val;
+
+            $i++;
+            if($i < count($values)) {
+                $cols .= ", ";
+                $vals .= ", ";
+            }
+        }
+        $cols .= ") ";
+        $vals .= ") ";
+
+        $sql .= $cols ." VALUES ". $vals;
+        return query($sql, $params);
+    }
+
 }

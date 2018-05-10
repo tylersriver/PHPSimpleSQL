@@ -37,3 +37,13 @@ echo var_dump($result);
 $result = TestUser::GetOne(); // No filter
 echo "GetOne No Filter Test. Result: ";
 echo var_dump($result);
+
+// -- Add Test
+// -------------------------------------------------------------------------------------------------------------------------
+$result = TestUser::Add([
+    'firstName' => 'Jennifer',
+    'lastName' => 'Smith',
+    'userName' => 'jennifer.smith'
+]); // No filter
+echo "Add test. Result: ";
+echo var_dump($result);
