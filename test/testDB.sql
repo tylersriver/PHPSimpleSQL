@@ -10,3 +10,8 @@ create table testUser (
     startDate datetime not null default current_timestamp,
     isActive tinyint(1) not null default 1
 );
+
+insert into testUser (firstName, lastName, userName) values ('John', 'Doe', 'john.doe');
+insert into testUser (firstName, lastName, userName) values ('James', 'Person', 'james.person');
+insert into testUser (firstName, lastName, userName) values ('Tyler', 'Guy', 'tyler.guy');
+insert into testUser (firstName, lastName, userName) values ('Steve', 'Stevenson', 'steve.stevenson');
