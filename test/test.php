@@ -60,7 +60,12 @@ $result = TestUser::Add([
     'firstName' => 'Jennifer',
     'lastName' => 'Smith',
     'userName' => 'jennifer.smith'
-]); // No filter
+]);
+$result = TestUser::Add([
+    'firstName' => 'Tyler',
+    'lastName' => 'Guy',
+    'userName' => 'jennifer.smith'
+]);
 echo "Add test. Result: ";
 echo var_dump($result);
 

@@ -74,7 +74,7 @@ class SimpleORM
     /**
      * Inserts a record into the table
      * @param array values - associative array of field => value
-     * @return int - insert id
+     * @return array|bool - The record added
      */
     public static function Add($values = array())
     {
@@ -104,7 +104,9 @@ class SimpleORM
         $vals .= ") ";
 
         $sql .= $cols ." VALUES ". $vals;
-        return query($sql, $params);
+        $id = query($sql, $params);
+
+        return static::Get($id);
     }
 
     /**
