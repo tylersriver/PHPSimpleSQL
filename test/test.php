@@ -12,6 +12,8 @@
  *      Add
  *      Update
  *      UpdateMany
+ *      Delete
+ *      DeleteMany
  */
 
 require_once "testModel.php";
