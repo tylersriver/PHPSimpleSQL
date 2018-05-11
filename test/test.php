@@ -65,9 +65,20 @@ echo var_dump($result);
 // -- Update Test
 // -------------------------------------------------------------------------------------------------------------------------
 $result = TestUser::Update(6, ['firstName' => 'Bart']);
-echo "Add test. Result: ";
+echo "Update test. Result: ";
 echo var_dump($result);
 
 $result = TestUser::UpdateMany(['firstName' => 'Jennifer'], ['firstName' => 'List']);
-echo "Add test. Result: ";
+echo "Update test. Result: ";
+echo var_dump($result);
+
+
+// -- Delete Test
+// -------------------------------------------------------------------------------------------------------------------------
+$result = TestUser::Delete(6);
+echo "Delete test. Result: ";
+echo var_dump($result);
+
+$result = TestUser::DeleteMany(['lastName' => 'Guy']);
+echo "Delete test. Result: ";
 echo var_dump($result);

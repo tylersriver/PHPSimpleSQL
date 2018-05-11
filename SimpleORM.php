@@ -111,8 +111,9 @@ class SimpleORM
      * Updates a record
      * @param $id - id of the record we are updating
      * @param $set - associative array of which fields to update
+     * @return array|bool
      */
-    public static function Update($id, $set)
+    public static function Update($id, $set = array())
     {
         $sql = "UPDATE ".static::$table." SET ";
         $params = array();
@@ -137,8 +138,9 @@ class SimpleORM
      * Updates many records based on where criteria
      * @param array $set - associative array of which fields to update
      * @param array $where - associative array of what fields to match in where clause
+     * @return array|bool
      */
-    public static function UpdateMany($set, $where)
+    public static function UpdateMany($set = array(), $where = array())
     {
         $sql = "UPDATE ".static::$table." SET ";
         $params = array();
@@ -171,4 +173,54 @@ class SimpleORM
         return query($sql, $params);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
     }
 
+    /**
+     * Deletes a record and returns the deleted record
+     * @param $id - The id of the record being deleted
+     * @return array - returns the deleted record
+     */
+    public static function Delete($id)
+    {
+        // Get the record to delete
+        $toDelete = static::Get($id);
+
+        // Delete the record
+        $sql = "DELETE FROM ".static::$table." WHERE ".static::$key." = ?";
+        query($sql, [$id]);
+
+        // return the deleted record
+        return $toDelete;
+    }
+
+    /**
+     * Deletes many records based on where criteria
+     * @param array $where - associative array of what fields to match in where clause
+     * @return array - records deleted
+     */
+    public static function DeleteMany($where = array())
+    {
+        // Prevent deleting all records
+        if(count($where) == 0) {
+            return array();
+        }
+
+        // Get records to delete
+        $toDelete = static::GetList($where);
+
+        // Build delete query
+        $sql = "DELETE FROM ".static::$table." WHERE ";
+        $i = 0;
+        $params = array();
+        foreach($where as $key => $val) {
+            $sql .= $key ." = ? ";
+            $params[] = $val;
+
+            $i++;
+            if($i < count($where)) {
+                $sql .= "AND ";
+            }
+        }
+        query($sql, $params);
+
+        return $toDelete;
+    }
 }
