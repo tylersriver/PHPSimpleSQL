@@ -68,6 +68,9 @@ class SimpleORM
     public static function GetOne($where = array())
     {
         $result = static::GetList($where);
+        if(count($result) < 1) {
+            return array();
+        }
         return $result[0];
     }
 
