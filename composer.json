@@ -7,8 +7,8 @@
         "php": "^7.0"
     },
     "autoload": {
-        "psr-0": {
-            "SimpleSQL": "src/"
+        "psr-4": {
+            "SimpleSQL\\": "src/"
         }
     }
 }
