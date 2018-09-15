@@ -71,7 +71,7 @@ class TestUser extends SimpleSQL\ORM
     {
         // Additional functions can be added for custom operations
         $sql = "SELECT * FROM testUser ... ";
-        return query($sql);
+        return SQL::query($sql);
     }
 }
 
