@@ -1,5 +1,5 @@
 {
-    "name": "PHPSimpleSQL",
+    "name": "tylersriver/PHPSimpleSQL",
     "description": "A simple self managed wrapper for MySQLi in PHP",
     "license": "MIT",
     "require": {
