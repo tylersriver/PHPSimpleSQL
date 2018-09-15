@@ -3,7 +3,7 @@
     "description": "A simple self managed wrapper for MySQLi in PHP",
     "license": "MIT",
     "require": {
-        "php": "^5.5 || ^7.0"
+        "php": "^7.0"
     },
     "autoload": {
         "psr-4": {
