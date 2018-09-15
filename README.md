@@ -17,6 +17,7 @@ I have reduced it to a single function call with this class.
 ## 1.3 Example
 
 ### 1.3.1 Defining MySQL Server Constants
+These constants will be used by the SQL class 
 ```php
 define("MYSQL_SERVER", "localhost");
 define("MYSQL_USER", "testUser");
