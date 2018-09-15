@@ -9,20 +9,20 @@
  * @author <tyler.w.sriver@eagles.oc.edu>
  */
 namespace SimpleSQL;
-class SimpleSQL
+class SQL
 {
     // -- Connection Strings
-    private  $servername = 'localhost';
-    private  $username = 'testUser';
-    private  $password = 'test';
-    private  $db = 'test';
+    private  $servername = MYSQL_SERVER;
+    private  $username = MYSQL_USER;
+    private  $password = MYSQL_PASSWORD;
+    private  $db = MYSQL_DB;
 
     private $conn; // MySQLi Connection
     private static $instance = null;
 
     private function __construct()
     {
-        $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->db);
+        $this->conn = new \mysqli($this->servername, $this->username, $this->password, $this->db);
         if($this->conn->connect_error){
             die("Connection failed: " . $this->conn->connect_error);
         }    
@@ -31,7 +31,7 @@ class SimpleSQL
     public static function getInstance()
     {
         if(!self::$instance) {
-            self::$instance = new SimpleSQL();
+            self::$instance = new SQL();
         }
         return self::$instance;
     }
@@ -48,116 +48,107 @@ class SimpleSQL
 
     private function __clone() {}
     private function __wakeup() {}
-}
+  
+    /**
+     * MySQLi bound query function
+     *
+     * @param $sql string - The query to be executed
+     * @param $params array - Array of the parameters for the query
+     * @return bool | array
+     */
+    public function query($sql, $params = array())
+    {
+        $db = self::getInstance();
+        $sql = trim($sql); // Trim extra whitespace
+        $params = (array)$params;
+        $result = false;
 
-/**
- * MySQLi bound query function
- *
- * @param $sql string - The query to be executed
- * @param $params array - Array of the parameters for the query
- * @return bool | array
- */
-function query($sql, $params = array())
-{
-    $db = SimpleSQL::getInstance();
-    $sql = trim($sql); // Trim extra whitespace
-    $params = (array)$params;
-    $result = false;
+        // Initiate statement
+        $conn = $db->getConn();
+        $stmt = $conn->prepare($sql);
+        if(!$stmt) {
+            die('SQL Error: ' . $sql);
+        }
 
-    // Initiate statement
-    $conn = $db->getConn();
-    $stmt = $conn->prepare($sql);
-    if(!$stmt) {
-        die('SQL Error: ' . $sql);
-    }
+        // Build types array
+        $types = self::buildTypeStringFromArray($params);
 
-    // Build types array
-    $types = buildTypeStringFromArray($params);
+        // Bind params
+        if (!empty($params)) {
+            $binds = array($types);
+            $binds = array_merge($binds, $params);
+            $newBinds = self::makeValuesReferenced($binds);
+            call_user_func_array(array($stmt, 'bind_param'), $newBinds);
+        }
 
-    // Bind params
-    if (!empty($params)) {
-        $binds = array($types);
-        $binds = array_merge($binds, $params);
-        $binds = makeValuesReferenced($binds);
-        call_user_func_array(array($stmt, 'bind_param'), $binds);
-    }
-
-    // Execute SQL
-    if($stmt->execute()) {
-        if($stmt->affected_rows >= 0 ) {
-            $result = $conn->insert_id;
-        } else {
-            $result = $stmt->get_result();
-            if($result != null && $result != false) {
-                $data = array();
-                while($row = $result->fetch_assoc()) {
-                    $data[] = $row;
+        // Execute SQL
+        if($stmt->execute()) {
+            if($stmt->affected_rows >= 0 ) {
+                $result = $conn->insert_id;
+            } else {
+                $result = $stmt->get_result();
+                if($result != null && $result != false) {
+                    $data = array();
+                    while($row = $result->fetch_assoc()) {
+                        $data[] = $row;
+                    }
+                    mysqli_free_result($result);
+                    return $data;
                 }
-                mysqli_free_result($result);
-                return $data;
             }
         }
+
+        return $result;
     }
 
-    return $result;
-}
-
-
-/***********************************************************************************************************************
- *
- *
- *    Utility Functions
- *
- *
- **********************************************************************************************************************/
-
-
-/**
- * Make array pass by reference
- * 
- * @param $arr array
- * @return array
- */
-function makeValuesReferenced(&$arr)
-{
-    $refs = array();
-    foreach($arr as $key => $value){
-        $refs[$key] = &$arr[$key];
-    }
-    return $refs;
-}
-
-/**
- * Build string of types from an array
- *
- * Possible types:
- *  boolean b
- *  double d
- *  integer i
- *  string s
- *
- * @param $params array
- * @return string
- */
-function buildTypeStringFromArray($params)
-{
-    $types = "";
-    foreach($params as &$p){
-        switch (gettype($p)) {
-            case 'boolean':
-                $bind = $bind ? 1 : 0;
-                $types .= 'i';
-                break;
-            case 'double':
-                $types .= 'd';
-                break;
-            case 'integer':
-                $types .= 'i';
-                break;
-            case 'string':
-            default:
-                $types .= 's';
+    /**
+     * Make array pass by reference
+     * 
+     * @param $arr array
+     * @return array
+     */
+    private function makeValuesReferenced(&$arr)
+    {
+        $refs = array();
+        foreach($arr as $key => $value){
+            $refs[$key] = &$arr[$key];
         }
+        return $refs;
     }
-    return $types;
+
+    /**
+     * Build string of types from an array
+     *
+     * Possible types:
+     *  boolean b
+     *  double d
+     *  integer i
+     *  string s
+     *
+     * @param $params array
+     * @return string
+     */
+    private function buildTypeStringFromArray($params)
+    {
+        $types = "";
+        foreach($params as &$p){
+            switch (gettype($p)) {
+                case 'boolean':
+                    $bind = $bind ? 1 : 0;
+                    $types .= 'i';
+                    break;
+                case 'double':
+                    $types .= 'd';
+                    break;
+                case 'integer':
+                    $types .= 'i';
+                    break;
+                case 'string':
+                default:
+                    $types .= 's';
+            }
+        }
+        return $types;
+    }
 }
+

@@ -10,7 +10,7 @@
  * @author <tyler.w.sriver@eagles.oc.edu>
  */
 namespace SimpleSQL;
-class SimpleORM
+class ORM
 {
     // -- DB Table Details
     protected static $table;
@@ -25,7 +25,7 @@ class SimpleORM
     public static function Get($id)
     {
         $sql = "SELECT ".static::$fields." FROM ".static::$table." WHERE ".static::$key." = ? LIMIT 1";
-        $result = query($sql, [$id]);
+        $result = SQL::query($sql, [$id]);
         return $result[0];
     }
 
@@ -57,7 +57,7 @@ class SimpleORM
             }
         }
 
-        return query($sql, $params);
+        return SQL::query($sql, $params);
     }
 
     /**
@@ -107,7 +107,7 @@ class SimpleORM
         $vals .= ") ";
 
         $sql .= $cols ." VALUES ". $vals;
-        $id = query($sql, $params);
+        $id = SQL::query($sql, $params);
 
         return static::Get($id);
     }
@@ -136,7 +136,7 @@ class SimpleORM
         }
         $sql .= " WHERE ".static::$key." = ?";   
         $params[] = $id; 
-        return query($sql, $params);
+        return SQL::query($sql, $params);
     }
 
     /**
@@ -175,7 +175,7 @@ class SimpleORM
             }
         }
         
-        return query($sql, $params);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+        return SQL::query($sql, $params);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
     }
 
     /**
@@ -190,7 +190,7 @@ class SimpleORM
 
         // Delete the record
         $sql = "DELETE FROM ".static::$table." WHERE ".static::$key." = ?";
-        query($sql, [$id]);
+        SQL::query($sql, [$id]);
 
         // return the deleted record
         return $toDelete;
@@ -224,7 +224,7 @@ class SimpleORM
                 $sql .= "AND ";
             }
         }
-        query($sql, $params);
+        SQL::query($sql, $params);
 
         return $toDelete;
     }
