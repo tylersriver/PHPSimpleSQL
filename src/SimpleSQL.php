@@ -8,6 +8,7 @@
  * Created By: Tyler Sriver
  * @author <tyler.w.sriver@eagles.oc.edu>
  */
+namespace SimpleSQL;
 class SimpleSQL
 {
     // -- Connection Strings

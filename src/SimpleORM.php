@@ -9,7 +9,7 @@
  * Created By: Tyler Sriver
  * @author <tyler.w.sriver@eagles.oc.edu>
  */
-require_once "SimpleSQL.php";
+namespace SimpleSQL;
 class SimpleORM
 {
     // -- DB Table Details
