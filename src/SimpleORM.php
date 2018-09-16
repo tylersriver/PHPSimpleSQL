@@ -9,6 +9,7 @@
  * Created By: Tyler Sriver
  * @author <tyler.w.sriver@eagles.oc.edu>
  */
+use SimpleSQL\SQL as SQL;
 namespace SimpleSQL;
 class ORM
 {

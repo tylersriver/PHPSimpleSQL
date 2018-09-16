@@ -57,10 +57,10 @@ Using a model you can encapsulate your SQL queries to a class. It also provides 
 This is a quick use case. More examples of each CRUD Function in the test directory.
 ```php
 require_once "SimpleSQL.php";
-use SimpleSQL\SQL as SQL;
 require_once "SimpleORM.php";
 
 // This class will hold all operations for 1 DB table
+use SimpleSQL\SQL as SQL;
 class TestUser extends SimpleSQL\ORM
 {
     protected static $table = "testUser"; // Exact mysql table name
