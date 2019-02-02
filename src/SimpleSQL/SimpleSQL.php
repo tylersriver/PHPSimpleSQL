@@ -78,26 +78,29 @@ class SQL
             $binds = array($types);
             $binds = array_merge($binds, $params);
             $newBinds = self::makeValuesReferenced($binds);
-            call_user_func_array(array($stmt, 'bind_param'), $newBinds);
+            call_user_func_array([$stmt, 'bind_param'], $newBinds);
         }
 
         // Execute SQL
-        if($stmt->execute()) {
-            if($stmt->affected_rows >= 0 ) {
-                $result = $conn->insert_id;
-            } else {
-                $result = $stmt->get_result();
-                if($result != null && $result != false) {
-                    $data = array();
-                    while($row = $result->fetch_assoc()) {
-                        $data[] = $row;
-                    }
-                    mysqli_free_result($result);
-                    return $data;
-                }
-            }
+        if(!$stmt->execute()) {
+            return $result;
         }
 
+        // Return if no result
+        if($stmt->affected_rows >= 0 ) {
+            return $conn->insert_id;
+        } 
+
+        // return selected results
+        $result = $stmt->get_result();
+        if($result != null && $result != false) {
+            $data = array();
+            while($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+            mysqli_free_result($result);
+            return $data;
+        }
         return $result;
     }
 
