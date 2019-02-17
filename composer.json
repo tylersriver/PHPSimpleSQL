@@ -4,7 +4,7 @@
     "version": "2.2.1",
     "license": "MIT",
     "require": {
-        "php": "^5.5"
+        "php": "^7.1"
     },
     "autoload": {
         "psr-4": {
@@ -15,5 +15,8 @@
         "psr-4": {
             "SimpleSQL\\": "src/SimpleSQL"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
     }
 }
