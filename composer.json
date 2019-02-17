@@ -1,7 +1,7 @@
 {
     "name": "tylersriver/php-simple-sql",
     "description": "A simple self managed wrapper for MySQLi in PHP",
-    "version": "2.3.2",
+    "version": "2.3.3",
     "license": "MIT",
     "require": {
         "php": "^7.1"
