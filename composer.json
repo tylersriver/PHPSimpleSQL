@@ -1,0 +1,22 @@
+{
+    "name": "tylersriver/php-simple-sql",
+    "description": "A simple self managed wrapper for MySQLi in PHP",
+    "version": "2.3.2",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "SimpleSQL\\": "src/SimpleSQL"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SimpleSQL\\": "src/SimpleSQL"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
+    }
+}

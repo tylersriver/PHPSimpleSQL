@@ -15,12 +15,24 @@ I have reduced it to a single function call with this class.
  * Inserts return the insert id
  
 ## 1.3 Example
+
+### 1.3.1 Defining MySQL Server Constants
+These constants will be used by the SQL class 
+```php
+define("MYSQL_SERVER", "localhost");
+define("MYSQL_USER", "testUser");
+define("MYSQL_PASSWORD", "test");
+define("MYSQL_DB", "test");
+```
+
+### 1.3.2 Using the class
 ```php
 <?php
 require_once "SimpleSQL.php";
+use SimpleSQL\SQL as SQL;
 $sql = 'select * from test where field = ? and field2 = ?';
 $params = ['fieldValue', 'field2Value']; // Params added in order of '?' placement in query
-$result = query($sql, $params);
+$result = SQL::query($sql, $params);
 ```
 
 # 2 SimpleORM
@@ -44,8 +56,12 @@ Using a model you can encapsulate your SQL queries to a class. It also provides 
 ## 2.2 Example
 This is a quick use case. More examples of each CRUD Function in the test directory.
 ```php
+require_once "SimpleSQL.php";
+require_once "SimpleORM.php";
+
 // This class will hold all operations for 1 DB table
-class TestUser extends SimpleORM
+use SimpleSQL\SQL as SQL;
+class TestUser extends SimpleSQL\ORM
 {
     protected static $table = "testUser"; // Exact mysql table name
     protected static $key = "id"; // the primary key field name
@@ -55,7 +71,7 @@ class TestUser extends SimpleORM
     {
         // Additional functions can be added for custom operations
         $sql = "SELECT * FROM testUser ... ";
-        return query($sql);
+        return SQL::query($sql);
     }
 }
 
